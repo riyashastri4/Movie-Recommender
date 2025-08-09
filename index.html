@@ -1,27 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Suggestion App</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pick Your Genre</title>
+<style>
+    body {
+        background-color: #111;
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    h1 {
+        margin-top: 40px;
+        font-size: 2em;
+    }
+    .genres {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 40px;
+    }
+    .genre {
+        background-color: #222;
+        border-radius: 15px;
+        padding: 10px;
+        width: 150px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .genre img {
+        width: 100%;
+        border-radius: 15px;
+    }
+    .genre:hover {
+        transform: scale(1.05);
+    }
+    button {
+        margin-top: 40px;
+        background-color: transparent;
+        border: 2px solid white;
+        color: white;
+        padding: 10px 30px;
+        border-radius: 30px;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: white;
+        color: black;
+    }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎬 Movie Suggestion App</h1>
 
-        <div id="genre-container">
-            <!-- Genres will be loaded here -->
-        </div>
-
-        <button id="get-movie">Get Movie</button>
-
-        <div id="movie-result" class="hidden">
-            <h2 id="movie-title"></h2>
-            <img id="movie-poster" alt="Movie Poster">
-        </div>
+<h1>Pick your Genre</h1>
+<div class="genres">
+    <div class="genre" onclick="selectGenre('35')">
+        <img src="comedy.jpg" alt="Comedy">
+        <p>Comedy</p>
     </div>
+    <div class="genre" onclick="selectGenre('10749')">
+        <img src="romance.jpg" alt="Romance">
+        <p>Romance</p>
+    </div>
+    <div class="genre" onclick="selectGenre('27')">
+        <img src="horror.jpg" alt="Horror">
+        <p>Horror</p>
+    </div>
+    <div class="genre" onclick="selectGenre('28')">
+        <img src="action.jpg" alt="Action">
+        <p>Action</p>
+    </div>
+</div>
 
-    <script src="script.js"></script>
+<button onclick="fetchMovies()">Done</button>
+
+<div id="movies"></div>
+
+<script>
+let selectedGenre = null;
+
+function selectGenre(genreId) {
+    selectedGenre = genreId;
+}
+
+async function fetchMovies() {
+    if (!selectedGenre) {
+        alert("Please pick a genre first!");
+        return;
+    }
+    const apiKey = "YOUR_TMDB_KEY";
+    const res = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=${selectedGenre}`);
+    const data = await res.json();
+    const moviesDiv = document.getElementById('movies');
+    moviesDiv.innerHTML = data.results.map(movie => `
+        <div>
+            <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" alt="${movie.title}">
+            <p>${movie.title}</p>
+        </div>
+    `).join('');
+}
+</script>
+
 </body>
 </html>
