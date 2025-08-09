@@ -3,19 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Suggester</title>
+    <title>Movie Suggestion App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app">
-        <h1>🎬 Movie Suggester</h1>
-        <div class="movie-card">
-            <img id="poster" src="" alt="Movie Poster">
-            <h2 id="title"></h2>
-            <p id="desc"></p>
+    <div class="container">
+        <h1>🎬 Movie Suggestion App</h1>
+
+        <div id="genre-container">
+            <!-- Genres will be loaded here -->
         </div>
-        <button onclick="suggestMovie()">Suggest a Movie</button>
+
+        <button id="get-movie">Get Movie</button>
+
+        <div id="movie-result" class="hidden">
+            <h2 id="movie-title"></h2>
+            <img id="movie-poster" alt="Movie Poster">
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
