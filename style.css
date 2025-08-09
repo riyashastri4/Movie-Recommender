@@ -32,15 +32,27 @@ body {
     background: #ff5733;
 }
 
-button {
-    background-color: #ff5733;
-    border: none;
-    padding: 12px 20px;
-    cursor: pointer;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
+button#get-movie {
+  background-color: #e50914;
+  border: none;
+  padding: 12px 25px;
+  cursor: pointer;
+  color: white;
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  border-radius: 8px;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.7);
 }
+
+button#get-movie:hover {
+  background-color: #b00710;
+}
+
 
 #movie-poster {
     width: 300px;
