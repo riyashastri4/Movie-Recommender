@@ -9,79 +9,103 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet" />
 
 <style>
-  /* Reset some defaults */
+  /* Reset and base */
   body, html {
-    margin: 0;
-    padding: 0;
+    margin: 0; padding: 0;
     height: 100%;
-    font-family: Arial, sans-serif; /* fallback */
+    font-family: 'Roboto', Arial, sans-serif;
     color: white;
     overflow-x: hidden;
-    position: relative;
+    background: url('bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  /* Use Roboto font throughout */
-  body, html {
-    font-family: 'Roboto', Arial, sans-serif;
-  }
-
-  /* Background image fixed behind everything */
+  /* Dark overlay */
   body::before {
     content: "";
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: url('bg.jpg') no-repeat center center fixed;
-    background-size: cover;
-    z-index: -2;
-  }
-
-  /* Dark overlay for better text contrast */
-  .overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.5);  /* Adjust darkness here */
+    background: rgba(0, 0, 0, 0.5);
     z-index: -1;
   }
 
-  /* Your content container */
+  /* Main container centered */
   .content {
     position: relative;
     z-index: 1;
-    padding: 20px;
     text-align: center;
+    background: rgba(0,0,0,0.6);
+    padding: 30px 40px;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 90vw;
   }
 
   h1 {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   #genre-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
+    gap: 15px;
+    margin-bottom: 25px;
   }
 
   .genre-btn {
+    position: relative;
     background: #333;
     border: none;
     color: white;
-    padding: 10px 18px;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 16px;
-    transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 0;
+    width: 120px;
+    height: 140px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-shadow: 1px 1px 5px black;
   }
 
+  .genre-btn img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.6);
+    transition: filter 0.3s ease;
+    border-radius: 10px;
+    z-index: 0;
+  }
+
+  .genre-btn span {
+    position: relative;
+    z-index: 1;
+    padding: 10px 0;
+    background: rgba(0,0,0,0.6);
+    border-radius: 0 0 10px 10px;
+  }
+
+  .genre-btn:hover,
   .genre-btn.active {
-    background: #ff5733;
-    color: #fff;
     transform: scale(1.1);
-    box-shadow: 0 4px 15px rgba(255, 87, 51, 0.7);
+    box-shadow: 0 6px 20px rgba(255, 87, 51, 0.8);
   }
 
-  /* Netflix-style Get Movie button */
+  .genre-btn.active img,
+  .genre-btn:hover img {
+    filter: brightness(0.8);
+  }
+
   button#get-movie {
     background-color: #e50914;
     border: none;
@@ -92,11 +116,13 @@
     font-family: 'Roboto', sans-serif;
     font-weight: 700;
     border-radius: 8px;
-    margin-top: 20px;
+    margin-top: 10px;
     transition: background-color 0.3s;
     text-transform: uppercase;
     letter-spacing: 1.2px;
     box-shadow: 0 2px 8px rgba(229, 9, 20, 0.7);
+    width: 100%;
+    max-width: 200px;
   }
 
   button#get-movie:hover {
@@ -120,7 +146,6 @@
     font-weight: bold;
   }
 
-  /* Hide element */
   .hidden {
     display: none;
   }
@@ -128,12 +153,11 @@
 </head>
 <body>
 
-  <div class="overlay"></div>
   <div class="content">
 
     <h1>Pick Your Genre(s)</h1>
     <div id="genre-container">
-      <!-- Genre buttons will load here dynamically -->
+      <!-- Genre buttons inserted here -->
     </div>
 
     <button id="get-movie">Get Movie</button>
@@ -156,12 +180,33 @@
   const moviePoster = document.getElementById("movie-poster");
   const movieTitle = document.getElementById("movie-title");
 
+  // Example genre images — replace with your own URLs or local images
+  const genreImages = {
+    28: "https://image.tmdb.org/t/p/w200/4bBeRzIq5j2PnpbOqGoDXRNi5Hg.jpg",     // Action
+    12: "https://image.tmdb.org/t/p/w200/vl1fPnl7l5jlQv4YChhIxkPoOai.jpg",     // Adventure
+    16: "https://image.tmdb.org/t/p/w200/wc1FG16Ik3UjslNBXUqWcuDkFcF.jpg",     // Animation
+    35: "https://image.tmdb.org/t/p/w200/cZ0Lt5oKuvyD1TKgBjuAxT1Peq8.jpg",     // Comedy
+    80: "https://image.tmdb.org/t/p/w200/7SlH6WiJZyo6D1pX6pPhDgC0sF9.jpg",     // Crime
+    99: "https://image.tmdb.org/t/p/w200/6t7vnRmiROvUtOH7GNR3bozOa4Y.jpg",     // Documentary
+    18: "https://image.tmdb.org/t/p/w200/nyXOXLOxtEIlVxAPq9FcYg7tqk7.jpg",     // Drama
+    10751: "https://image.tmdb.org/t/p/w200/9qFco5BBv8QY1LuER3LZv5Y1Q7E.jpg",  // Family
+    14: "https://image.tmdb.org/t/p/w200/x5Iq1qG4U8lcKxRH4GhOYpaD60d.jpg",     // Fantasy
+    36: "https://image.tmdb.org/t/p/w200/cvGsQ38gBZOh5MGF1uhOewi4Nmz.jpg",     // History
+    27: "https://image.tmdb.org/t/p/w200/3xJZLnKIqi5C3RHzx4i2YbQ5Gp8.jpg",     // Horror
+    10402: "https://image.tmdb.org/t/p/w200/xYcTfJgSrGbAybyMeDlyxij9lKL.jpg",   // Music
+    9648: "https://image.tmdb.org/t/p/w200/gqkqPB9K3Hrfq7Rfttm91dsV2ap.jpg",    // Mystery
+    10749: "https://image.tmdb.org/t/p/w200/7cgmlCJbhWjLC9n3IGzIKtT2nV6.jpg",   // Romance
+    878: "https://image.tmdb.org/t/p/w200/w5rG7h9WZ7ctC2MK64AJjzT85pT.jpg",     // Sci-Fi
+    10770: "", // TV Movie (excluded)
+    53: "https://image.tmdb.org/t/p/w200/81Ke3f0Q1MH3sxUWOmyCMQ33TyF.jpg",      // Thriller
+    10752: "https://image.tmdb.org/t/p/w200/7uQ8sWfInbLPkWJhklDL1jOklaJ.jpg",   // War
+    37: "https://image.tmdb.org/t/p/w200/qG3RYlIVpTYclR9TYIsy8p7m7AT.jpg"       // Western
+  };
+
   let selectedGenres = [];
 
-  // Hide movie result on page load
   movieResult.classList.add("hidden");
 
-  // Fetch and display genres as buttons (exclude TV Movie id 10770)
   fetch(GENRE_URL)
     .then(res => res.json())
     .then(data => {
@@ -170,7 +215,18 @@
 
         const btn = document.createElement("button");
         btn.classList.add("genre-btn");
-        btn.textContent = genre.name;
+
+        // Create and append image
+        const img = document.createElement("img");
+        img.src = genreImages[genre.id] || "https://via.placeholder.com/120x140?text=No+Image";
+        img.alt = genre.name;
+        btn.appendChild(img);
+
+        // Create and append label
+        const span = document.createElement("span");
+        span.textContent = genre.name;
+        btn.appendChild(span);
+
         btn.addEventListener("click", () => toggleGenre(genre.id, btn));
         genreContainer.appendChild(btn);
       });
@@ -188,8 +244,6 @@
       selectedGenres.push(id);
       btn.classList.add("active");
     }
-
-    // Hide movie result when genres change
     movieResult.classList.add("hidden");
   }
 
@@ -199,10 +253,7 @@
       return;
     }
 
-    // Random page from 1 to 5 for variety
     const randomPage = Math.floor(Math.random() * 5) + 1;
-
-    // Add certification filters for PG-13 or lower and exclude adult movies
     const url = `${MOVIE_URL}&with_genres=${selectedGenres.join(",")}&certification_country=US&certification.lte=PG-13&page=${randomPage}`;
 
     fetch(url)
@@ -213,9 +264,7 @@
           return;
         }
 
-        // Filter out adult movies just in case
         const safeResults = data.results.filter(movie => movie.adult === false);
-
         if (safeResults.length === 0) {
           alert("No family-friendly movies found.");
           return;
