@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
-
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pick Your Movie Genre - Family Friendly</title>
+
+<!-- Netflix-like font -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet" />
+
 <style>
   /* Reset some defaults */
   body, html {
@@ -74,20 +76,26 @@
     box-shadow: 0 4px 15px rgba(255, 87, 51, 0.7);
   }
 
+  /* Netflix-style Get Movie button */
   button#get-movie {
-    background-color: #ff5733;
+    background-color: #e50914;
     border: none;
     padding: 12px 25px;
     cursor: pointer;
     color: white;
     font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
     border-radius: 8px;
     margin-top: 20px;
     transition: background-color 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    box-shadow: 0 2px 8px rgba(229, 9, 20, 0.7);
   }
 
   button#get-movie:hover {
-    background-color: #e04e20;
+    background-color: #b00710;
   }
 
   #movie-result {
