@@ -1,39 +1,53 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #111;
+    background-color: #1c1c1c;
     color: white;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.app {
     text-align: center;
-    max-width: 400px;
-    padding: 20px;
-    background: #222;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    margin: 0;
+    padding: 0;
 }
 
-.movie-card img {
-    width: 100%;
-    border-radius: 10px;
+.container {
+    padding: 20px;
+}
+
+#genre-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.genre-btn {
+    background: #333;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.genre-btn.active {
+    background: #ff5733;
 }
 
 button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background: #ff9800;
+    background-color: #ff5733;
     border: none;
+    padding: 12px 20px;
+    cursor: pointer;
     color: white;
     font-size: 16px;
     border-radius: 5px;
-    cursor: pointer;
 }
 
-button:hover {
-    background: #e68900;
+#movie-poster {
+    width: 300px;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+
+.hidden {
+    display: none;
 }
