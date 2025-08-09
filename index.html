@@ -1,143 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pick Your Movie Genre - Family Friendly</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pick Your Movie Genre - Family Friendly</title>
 
-<!-- Netflix-like font -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet" />
-
-<style>
-  body, html {
-    margin: 0; padding: 0;
-    height: 100%;
-    font-family: 'Roboto', Arial, sans-serif;
-    color: white;
-    overflow-x: hidden;
-    background: url('bg.jpg') no-repeat center center fixed;
-    background-size: cover;
-    position: relative;
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: -1;
-  }
-
-  .content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 30px 20px 60px 20px;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  h1 {
-    margin-bottom: 20px;
-  }
-
-  #genre-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 25px;
-  }
-
-  .genre-btn {
-    background: linear-gradient(145deg, #222, #111);
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 10px;
-    font-size: 16px;
-    padding: 20px 15px;
-    width: 120px;
-    height: 140px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-shadow: 1px 1px 5px black;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s;
-    user-select: none;
-  }
-
-  .genre-btn.active {
-    background: #ff5733;
-    color: #fff;
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(255, 87, 51, 0.8);
-  }
-
-  .genre-btn:hover:not(.active) {
-    background: #333;
-    transform: scale(1.05);
-  }
-
-  button#get-movie {
-    background-color: #e50914;
-    border: none;
-    padding: 12px 25px;
-    cursor: pointer;
-    color: white;
-    font-size: 18px;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 700;
-    border-radius: 8px;
-    margin-top: 10px;
-    transition: background-color 0.3s;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    box-shadow: 0 2px 8px rgba(229, 9, 20, 0.7);
-    width: 100%;
-    max-width: 200px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  button#get-movie:hover {
-    background-color: #b00710;
-  }
-
-  #movie-result {
-    margin-top: 30px;
-  }
-
-  #movie-poster {
-    width: 300px;
-    max-width: 90vw;
-    border-radius: 10px;
-    box-shadow: 0 0 20px #ff5733;
-    display: block;
-    margin: 0 auto;
-  }
-
-  #movie-title {
-    margin-top: 15px;
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-  }
-
-  .hidden {
-    display: none;
-  }
-</style>
+  <!-- Netflix-like font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet" />
+  
+  <!-- Link to external CSS -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <div class="content">
 
     <h1>Pick Your Genre(s)</h1>
-    <div id="genre-container">
-      <!-- Genre buttons inserted here -->
-    </div>
+    <div id="genre-container"></div>
 
     <button id="get-movie">Get Movie</button>
 
@@ -148,91 +27,7 @@
 
   </div>
 
-<script>
-  const API_KEY = "30390da6c321496f2c46e19976399e4f";
-  const GENRE_URL = `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=en-US`;
-  const MOVIE_URL = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US`;
-
-  const genreContainer = document.getElementById("genre-container");
-  const getMovieBtn = document.getElementById("get-movie");
-  const movieResult = document.getElementById("movie-result");
-  const moviePoster = document.getElementById("movie-poster");
-  const movieTitle = document.getElementById("movie-title");
-
-  let selectedGenres = [];
-
-  movieResult.classList.add("hidden");
-
-  fetch(GENRE_URL)
-    .then(res => res.json())
-    .then(data => {
-      data.genres.forEach(genre => {
-        if (genre.id === 10770) return; // exclude TV Movie
-
-        const btn = document.createElement("button");
-        btn.classList.add("genre-btn");
-        btn.textContent = genre.name;
-        btn.addEventListener("click", () => toggleGenre(genre.id, btn));
-        genreContainer.appendChild(btn);
-      });
-    })
-    .catch(err => {
-      genreContainer.textContent = "Failed to load genres.";
-      console.error(err);
-    });
-
-  function toggleGenre(id, btn) {
-    if (selectedGenres.includes(id)) {
-      selectedGenres = selectedGenres.filter(g => g !== id);
-      btn.classList.remove("active");
-    } else {
-      selectedGenres.push(id);
-      btn.classList.add("active");
-    }
-    movieResult.classList.add("hidden");
-  }
-
-  getMovieBtn.addEventListener("click", () => {
-    if (selectedGenres.length === 0) {
-      alert("Please select at least one genre!");
-      return;
-    }
-
-    const randomPage = Math.floor(Math.random() * 5) + 1;
-    const url = `${MOVIE_URL}&with_genres=${selectedGenres.join(",")}&certification_country=US&certification.lte=PG-13&page=${randomPage}`;
-
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        if (!data.results || data.results.length === 0) {
-          alert("No movies found for the selected genres.");
-          return;
-        }
-
-        const safeResults = data.results.filter(movie => movie.adult === false);
-        if (safeResults.length === 0) {
-          alert("No family-friendly movies found.");
-          return;
-        }
-
-        const movie = safeResults[Math.floor(Math.random() * safeResults.length)];
-
-        if (!movie.poster_path) {
-          moviePoster.src = "";
-          moviePoster.alt = "No poster available";
-        } else {
-          moviePoster.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-          moviePoster.alt = movie.title;
-        }
-        movieTitle.textContent = movie.title;
-        movieResult.classList.remove("hidden");
-      })
-      .catch(err => {
-        alert("Failed to fetch movies. Please try again later.");
-        console.error(err);
-      });
-  });
-</script>
-
+  <!-- Link to external JS -->
+  <script src="script.js"></script>
 </body>
 </html>
