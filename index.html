@@ -9,7 +9,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet" />
 
 <style>
-  /* Reset and base */
   body, html {
     margin: 0; padding: 0;
     height: 100%;
@@ -23,7 +22,6 @@
     align-items: center;
   }
 
-  /* Dark overlay */
   body::before {
     content: "";
     position: fixed;
@@ -32,7 +30,6 @@
     z-index: -1;
   }
 
-  /* Main container centered */
   .content {
     position: relative;
     z-index: 1;
@@ -57,53 +54,33 @@
   }
 
   .genre-btn {
-    position: relative;
-    background: #333;
+    background: linear-gradient(145deg, #222, #111);
     border: none;
     color: white;
     cursor: pointer;
     border-radius: 10px;
     font-size: 16px;
-    padding: 0;
+    padding: 20px 15px;
     width: 120px;
     height: 140px;
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
     text-shadow: 1px 1px 5px black;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s;
+    user-select: none;
   }
 
-  .genre-btn img {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.6);
-    transition: filter 0.3s ease;
-    border-radius: 10px;
-    z-index: 0;
-  }
-
-  .genre-btn span {
-    position: relative;
-    z-index: 1;
-    padding: 10px 0;
-    background: rgba(0,0,0,0.6);
-    border-radius: 0 0 10px 10px;
-  }
-
-  .genre-btn:hover,
   .genre-btn.active {
+    background: #ff5733;
+    color: #fff;
     transform: scale(1.1);
     box-shadow: 0 6px 20px rgba(255, 87, 51, 0.8);
   }
 
-  .genre-btn.active img,
-  .genre-btn:hover img {
-    filter: brightness(0.8);
+  .genre-btn:hover:not(.active) {
+    background: #333;
+    transform: scale(1.05);
   }
 
   button#get-movie {
@@ -180,29 +157,6 @@
   const moviePoster = document.getElementById("movie-poster");
   const movieTitle = document.getElementById("movie-title");
 
-  // Example genre images — replace with your own URLs or local images
-  const genreImages = {
-    28: "https://image.tmdb.org/t/p/w200/4bBeRzIq5j2PnpbOqGoDXRNi5Hg.jpg",     // Action
-    12: "https://image.tmdb.org/t/p/w200/vl1fPnl7l5jlQv4YChhIxkPoOai.jpg",     // Adventure
-    16: "https://image.tmdb.org/t/p/w200/wc1FG16Ik3UjslNBXUqWcuDkFcF.jpg",     // Animation
-    35: "https://image.tmdb.org/t/p/w200/cZ0Lt5oKuvyD1TKgBjuAxT1Peq8.jpg",     // Comedy
-    80: "https://image.tmdb.org/t/p/w200/7SlH6WiJZyo6D1pX6pPhDgC0sF9.jpg",     // Crime
-    99: "https://image.tmdb.org/t/p/w200/6t7vnRmiROvUtOH7GNR3bozOa4Y.jpg",     // Documentary
-    18: "https://image.tmdb.org/t/p/w200/nyXOXLOxtEIlVxAPq9FcYg7tqk7.jpg",     // Drama
-    10751: "https://image.tmdb.org/t/p/w200/9qFco5BBv8QY1LuER3LZv5Y1Q7E.jpg",  // Family
-    14: "https://image.tmdb.org/t/p/w200/x5Iq1qG4U8lcKxRH4GhOYpaD60d.jpg",     // Fantasy
-    36: "https://image.tmdb.org/t/p/w200/cvGsQ38gBZOh5MGF1uhOewi4Nmz.jpg",     // History
-    27: "https://image.tmdb.org/t/p/w200/3xJZLnKIqi5C3RHzx4i2YbQ5Gp8.jpg",     // Horror
-    10402: "https://image.tmdb.org/t/p/w200/xYcTfJgSrGbAybyMeDlyxij9lKL.jpg",   // Music
-    9648: "https://image.tmdb.org/t/p/w200/gqkqPB9K3Hrfq7Rfttm91dsV2ap.jpg",    // Mystery
-    10749: "https://image.tmdb.org/t/p/w200/7cgmlCJbhWjLC9n3IGzIKtT2nV6.jpg",   // Romance
-    878: "https://image.tmdb.org/t/p/w200/w5rG7h9WZ7ctC2MK64AJjzT85pT.jpg",     // Sci-Fi
-    10770: "", // TV Movie (excluded)
-    53: "https://image.tmdb.org/t/p/w200/81Ke3f0Q1MH3sxUWOmyCMQ33TyF.jpg",      // Thriller
-    10752: "https://image.tmdb.org/t/p/w200/7uQ8sWfInbLPkWJhklDL1jOklaJ.jpg",   // War
-    37: "https://image.tmdb.org/t/p/w200/qG3RYlIVpTYclR9TYIsy8p7m7AT.jpg"       // Western
-  };
-
   let selectedGenres = [];
 
   movieResult.classList.add("hidden");
@@ -215,18 +169,7 @@
 
         const btn = document.createElement("button");
         btn.classList.add("genre-btn");
-
-        // Create and append image
-        const img = document.createElement("img");
-        img.src = genreImages[genre.id] || "https://via.placeholder.com/120x140?text=No+Image";
-        img.alt = genre.name;
-        btn.appendChild(img);
-
-        // Create and append label
-        const span = document.createElement("span");
-        span.textContent = genre.name;
-        btn.appendChild(span);
-
+        btn.textContent = genre.name;
         btn.addEventListener("click", () => toggleGenre(genre.id, btn));
         genreContainer.appendChild(btn);
       });
