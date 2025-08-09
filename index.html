@@ -17,9 +17,7 @@
     overflow-x: hidden;
     background: url('bg.jpg') no-repeat center center fixed;
     background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: relative;
   }
 
   body::before {
@@ -34,11 +32,9 @@
     position: relative;
     z-index: 1;
     text-align: center;
-    background: rgba(0,0,0,0.6);
-    padding: 30px 40px;
-    border-radius: 15px;
+    padding: 30px 20px 60px 20px;
     max-width: 600px;
-    width: 90vw;
+    margin: 0 auto;
   }
 
   h1 {
@@ -100,6 +96,9 @@
     box-shadow: 0 2px 8px rgba(229, 9, 20, 0.7);
     width: 100%;
     max-width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   button#get-movie:hover {
@@ -115,12 +114,15 @@
     max-width: 90vw;
     border-radius: 10px;
     box-shadow: 0 0 20px #ff5733;
+    display: block;
+    margin: 0 auto;
   }
 
   #movie-title {
     margin-top: 15px;
     font-size: 24px;
     font-weight: bold;
+    text-align: center;
   }
 
   .hidden {
