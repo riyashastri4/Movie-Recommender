@@ -90,7 +90,7 @@ async function fetchMovies() {
         alert("Please pick a genre first!");
         return;
     }
-    const apiKey = "YOUR_TMDB_KEY";
+    const apiKey = "30390da6c321496f2c46e19976399e4f";
     const res = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=${selectedGenre}`);
     const data = await res.json();
     const moviesDiv = document.getElementById('movies');
