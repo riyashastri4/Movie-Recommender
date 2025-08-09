@@ -68,3 +68,39 @@ button {
   transform: scale(1.1);
   box-shadow: 0 4px 15px rgba(255, 87, 51, 0.7);
 }
+/* Reset some defaults */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  color: white;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Background image fixed behind everything */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('Pick-your-Genre.jpg') no-repeat center center fixed;
+  background-size: cover;
+  z-index: -2;
+}
+
+/* Dark overlay for better text contrast */
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);  /* Adjust darkness here */
+  z-index: -1;
+}
+
+/* Your content container */
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+  text-align: center;
+}
