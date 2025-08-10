@@ -10,10 +10,12 @@ const movieTitle = document.getElementById("movie-title");
 
 let selectedGenres = [];
 
+// Clear poster and title initially
 moviePoster.src = "";
 movieTitle.textContent = "";
 movieResult.classList.add("hidden");
 
+// Fetch genres and add buttons
 fetch(GENRE_URL)
   .then(res => {
     console.log("Genre fetch status:", res.status);
