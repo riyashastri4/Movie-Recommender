@@ -54,6 +54,10 @@ h1 {
   text-shadow: 1px 1px 5px black;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s;
   user-select: none;
+
+  /* Prevent shrinking/collapsing on small screens */
+  min-width: 100px;
+  flex-shrink: 0;
 }
 
 .genre-btn.active {
@@ -117,6 +121,7 @@ button#get-movie:hover {
 .hidden {
   display: none;
 }
+
 /* Responsive adjustments for smaller screens */
 @media (max-width: 600px) {
   .content {
